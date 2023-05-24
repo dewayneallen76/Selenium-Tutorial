@@ -2,9 +2,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.concurrent.TimeUnit;
 
 public class Autocomplete {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
 
         System.setProperty("webdriver.chrome.driver", "/Users/larryallen/QA/chromedriver");
 
@@ -17,11 +21,16 @@ public class Autocomplete {
 //easier to write and run.
         autocomplete.sendKeys("16415 Strongbox, San Antonio, TX");
 //Adding this adds a "wait" of 1 second for the dropdown to appear, and then be selected.
-        Thread.sleep(1000);
+//        Thread.sleep(1000);
+        //Using an implicit wait.
+//        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        //Using an explicit wait
+        WebDriverWait wait = new WebDriverWait(driver,10);
 
 //NOTE: The autocomplete is not working on the example website that is being used for testing.
 //After entering the address and getting the Google maps dropdown you will need to find the class
-        WebElement autocompleteResult = driver.findElement(By.className("pac-item"));
+        //Incorporating the explicit wait this will now pull to
+        WebElement autocompleteResult = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("pac-item")));
         autocompleteResult.click();
 
         driver.quit();
